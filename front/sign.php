@@ -1,0 +1,157 @@
+<?php
+session_start();
+if(isset($_SESSION['name'])){
+header("location:profile.php");
+
+}
+else{
+?>
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Augment an Admin Panel Category Flat Bootstrap Responsive Web Template | Sign Up :: w3layouts</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Augment Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+ <!-- Bootstrap Core CSS -->
+<link href="../css/bootstrap.min.css" rel='stylesheet' type='text/css' />
+<!-- Custom CSS -->
+<link href="../css/style.css" rel='stylesheet' type='text/css' />
+<!-- Graph CSS -->
+<link href="../css/font-awesome.css" rel="stylesheet"> 
+<!-- jQuery -->
+<link href='//fonts.googleapis.com/css?family=Roboto:700,500,300,100italic,100,400' rel='stylesheet' type='text/css'>
+<!-- lined-icons -->
+<link rel="stylesheet" href="../css/icon-font.min.css" type='text/css' />
+<!-- //lined-icons -->
+<script src="../js/jquery-1.10.2.min.js"></script>
+<!--clock init-->
+</head> 
+<body>
+								<!--/login-->
+								
+									   <div class="error_page">
+												<!--/login-top-->
+												
+													<div class="error-top up">
+													<h2 class="inner-tittle page">Augment</h2>
+													    <div class="login">
+														<h3 class="inner-tittle t-inner">Sign Up</h3>
+																
+                                                        <form action="<?php echo $_SERVER['PHP_SELF']?>" method="POST">
+                                                                <input type="text" placeholder="name" name="name">
+																		<input type="text" class="text" name="email">
+																		<input type="password" name="password" >
+																		<div class="submit"><input type="submit" name="send" value=" Done sign" ></div>
+																		<div class="clearfix"></div>
+
+
+																		
+																		<div class="buttons">
+																			<ul>
+																				<li><a href="#" class="hvr-sweep-to-right">Sign up</a></li>
+																				<li class="or"><h6>OR</h6></li>
+																				<li class="lost"><a href="#" class="hvr-sweep-to-left">Sign up</a> </li>
+																				<div class="clearfix"></div>
+																			</ul>
+																		</div>
+																		<div class="new">
+																			<p class="sign up">Do you have an account yet ? <a href="login.php"> Login here.</a></p>
+																			<div class="clearfix"></div>
+																		</div>
+																	</form>
+														</div>
+														
+													</div>
+													 
+												<!--//login-top-->
+										   </div>
+                                              <!--//login-->
+                                              <?php
+$con=mysqli_connect("localhost","root","","shop");
+if($_SERVER['REQUEST_METHOD']=='POST'){
+if(isset($_POST['send'])){
+    
+    $name=$_POST['name'];
+    $pass=$_POST['password'];
+    $email=$_POST['email'];
+   $formerr=array();
+   if(isset($_POST['name'])){
+       $filtr=filter_var($_POST['name'],FILTER_SANITIZE_STRING);
+      
+       if(strlen($filtr)<4){
+$formerr[]='inter name >4';
+       }
+   }
+   if(isset($_POST['email'])){
+    $filtr=filter_var($_POST['email'],FILTER_SANITIZE_EMAIL);
+    if(filter_var($filtr,FILTER_VALIDATE_EMAIL)!=true){
+$formerr[]='the email not valided';}
+    
+}
+if(empty($_POST['password'])){
+    $formerr[]='inter the password';
+}
+    
+    foreach($formerr as $error){
+        ?>
+            <div class="alert alert-danger" role="alert">
+                <?php
+        echo $error;
+            ?>
+          </div>
+          <?php
+    }
+    if(empty($formerr)){
+        
+       /* $count=check_name('name',$name);
+    if($count==1){ echo'please inter anthor name';}
+else{*/
+        $con=mysqli_connect("localhost","root","","shop");
+   $query="INSERT INTO users (name,password,email)VALUE('$name','$pass','$email')";
+   $res=mysqli_query($con,$query);
+
+   if(isset($res)){
+    $_SESSION['name']=$name;
+    $_SESSION['email']=$email;										
+    header('location:profile.php');
+exit();
+    ?>
+    <div class="alert alert-danger" role="alert">
+        <?php
+echo "Done Insert";
+    ?>
+  </div>
+  <?php
+  }
+   }
+
+
+    
+    
+}
+}
+       ?>
+										    <!--footer section start-->
+										<div class="footer sign">
+										<div class="error-btn">
+															<a class="read fourth" href="index.html">Return to Home</a>
+															</div>
+										   <p>&copy 2016 Augment . All Rights Reserved | Design by <a href="https://w3layouts.com/" target="_blank">W3layouts.</a></p>
+										</div>
+									<!--footer section end-->
+									<!--/404-->
+<!--js -->
+<script src="../js/jquery.nicescroll.js"></script>
+<script src="../js/scripts.js"></script>
+<!-- Bootstrap Core JavaScript -->
+   <script src="../js/bootstrap.min.js"></script>
+</body>
+</html>
+
+<?php
+}
+?>
